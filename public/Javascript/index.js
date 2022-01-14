@@ -8,6 +8,7 @@ const workButtonEl = document.getElementById("workButton");
 let laptops = [];
 let salary = 0;
 let bank = 0;
+let loan = 0;
 
 const doWork = () => {
   salary += 500;
@@ -28,9 +29,19 @@ const depositToBank = () => {
   updateBank();
 };
 
+const calculateFOO = () => {
+    // Calculate something
+}
+
 const updateBank = () => {
   moneyInBankEl.innerHTML = bank;
 };
 
+const loanPrompt = () => {
+    let loanAmount = prompt("Please enter the amount you want to loan. You can maximum loan: " + salary*2)
+    console.log(loanAmount)
+}
+
 workButtonEl.addEventListener("click", doWork);
 bankButtonEl.addEventListener("click", depositToBank);
+loanButtonEl.addEventListener("click", loanPrompt)
