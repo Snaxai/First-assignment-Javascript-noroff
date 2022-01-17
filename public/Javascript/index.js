@@ -5,11 +5,12 @@ const laptopsEl = document.getElementById("laptops");
 const bankButtonEl = document.getElementById("bankButton");
 const loanButtonEl = document.getElementById("loanButton");
 const workButtonEl = document.getElementById("workButton");
-const repayLoanEl = document.getElementById("repayLoan");
+const repayLoanEl = document.getElementById("bankButtons");
 const priceEl = document.getElementById("price");
 const descriptionEl = document.getElementById("description");
 const laptopImgEl = document.getElementById("laptopImg");
 const buyButton = document.getElementById("buyButton");
+const laptopTitleEl = document.getElementById("laptopTitle");
 
 let laptops = [];
 let selectedLaptop = {};
@@ -27,6 +28,9 @@ const addLaptopsToSelect = (laptops) => {
   priceEl.innerText = laptops[0].price;
   descriptionEl.innerText = laptops[0].description;
   selectedLaptop = laptops[0];
+  laptopTitleEl.innerText = laptops[0].title;
+  laptopImgEl.src =
+    "https://noroff-komputer-store-api.herokuapp.com/assets/images/1.png";
 };
 
 const addLaptopToSelect = (laptop) => {
@@ -156,7 +160,7 @@ const requestLoan = (loanAmount) => {
 
 const handleBuyLaptop = () => {
   if (bank < selectedLaptop.price) {
-    alert("Sufficient funds");
+    alert("Insufficient funds");
   } else {
     bank -= selectedLaptop.price;
     updateBank();
