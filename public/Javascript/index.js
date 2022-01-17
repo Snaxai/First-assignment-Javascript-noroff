@@ -31,6 +31,7 @@ const addLaptopsToSelect = (laptops) => {
   descriptionEl.innerText = laptops[0].description;
   selectedLaptop = laptops[0];
   laptopTitleEl.innerText = laptops[0].title;
+  updateLaptopFeatures(laptops[0].specs);
   laptopImgEl.src =
     "https://noroff-komputer-store-api.herokuapp.com/assets/images/1.png";
 };
@@ -43,7 +44,7 @@ const addLaptopToSelect = (laptop) => {
 };
 
 const handleLaptopChange = (e) => {
-  laptopInfoEl.innerHTML = ""
+  laptopInfoEl.innerHTML = "";
   selectedLaptop = laptops[e.target.selectedIndex];
   priceEl.innerText = selectedLaptop.price;
   descriptionEl.innerText = selectedLaptop.description;
@@ -53,7 +54,7 @@ const handleLaptopChange = (e) => {
 };
 
 const updateLaptopFeatures = (specs) => {
-  console.log(specs)
+  console.log(specs);
   specs.forEach((feature) => {
     const laptopSpecElement = document.createElement("div");
     laptopSpecElement.appendChild(document.createTextNode(feature));
