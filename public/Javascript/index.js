@@ -11,6 +11,7 @@ const descriptionEl = document.getElementById("description");
 const laptopImgEl = document.getElementById("laptopImg");
 const buyButton = document.getElementById("buyButton");
 const laptopTitleEl = document.getElementById("laptopTitle");
+const repayLoanButton = document.getElementById("repayLoan");
 
 let laptops = [];
 let selectedLaptop = {};
@@ -84,6 +85,11 @@ const calculateLoanPayment = (salary) => {
 
 const updateLoan = () => {
   loanEl.innerHTML = loan;
+  if (loan > 0) {
+    repayLoanButton.style.display = "inline";
+  } else {
+    repayLoanButton.style.display = "none";
+  }
 };
 
 const updateBank = () => {
@@ -109,16 +115,9 @@ const loanPrompt = () => {
   }
 };
 
-const createRepayLoanButton = () => {
-  let repayBtn = document.createElement("button");
-  repayBtn.innerHTML = "Repay Loan";
-
-  repayBtn.onclick = () => repayLoan();
-
-  repayLoanEl.append(repayBtn);
+const removeRepayLoanButton = () => {
+  console.log("Remove button");
 };
-
-const removeRepayLoanButton = () => {};
 
 const repayLoan = () => {
   let loanToBePayed = loan;
@@ -137,8 +136,6 @@ const repayLoan = () => {
 
   updateLoan();
   updateSalaryHTML();
-
-  console.log("Repayed loan");
 };
 
 const requestLoan = (loanAmount) => {
@@ -173,3 +170,4 @@ bankButtonEl.addEventListener("click", depositToBank);
 loanButtonEl.addEventListener("click", loanPrompt);
 laptopsEl.addEventListener("change", handleLaptopChange);
 buyButton.addEventListener("click", handleBuyLaptop);
+repayLoanButton.addEventListener("click", repayLoan);
