@@ -12,6 +12,7 @@ const laptopImgEl = document.getElementById("laptopImg");
 const buyButton = document.getElementById("buyButton");
 const laptopTitleEl = document.getElementById("laptopTitle");
 const repayLoanButton = document.getElementById("repayLoan");
+const laptopInfoEl = document.getElementById("laptopInfo");
 
 let laptops = [];
 let selectedLaptop = {};
@@ -42,11 +43,22 @@ const addLaptopToSelect = (laptop) => {
 };
 
 const handleLaptopChange = (e) => {
+  laptopInfoEl.innerHTML = ""
   selectedLaptop = laptops[e.target.selectedIndex];
   priceEl.innerText = selectedLaptop.price;
   descriptionEl.innerText = selectedLaptop.description;
+  updateLaptopFeatures(selectedLaptop.specs);
   laptopImgEl.src =
     "https://noroff-komputer-store-api.herokuapp.com/" + selectedLaptop.image;
+};
+
+const updateLaptopFeatures = (specs) => {
+  console.log(specs)
+  specs.forEach((feature) => {
+    const laptopSpecElement = document.createElement("div");
+    laptopSpecElement.appendChild(document.createTextNode(feature));
+    laptopInfoEl.appendChild(laptopSpecElement);
+  });
 };
 
 const doWork = () => {
