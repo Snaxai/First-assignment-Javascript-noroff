@@ -14,17 +14,25 @@ const laptopTitleEl = document.getElementById("laptopTitle");
 const repayLoanButton = document.getElementById("repayLoan");
 const laptopInfoEl = document.getElementById("laptopInfo");
 
+// Global variables
+const payPerClick = 100;
 let laptops = [];
 let selectedLaptop = {};
 let salary = 0;
 let bank = 0;
 let loan = 0;
 
+// Fetches the laptops used in the project
 fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
   .then((response) => response.json())
   .then((data) => (laptops = data))
   .then((laptops) => addLaptopsToSelect(laptops));
 
+/**
+ * Adds laptops to the select element
+ * and also renders default values to the screen (laptop 0 info)
+ * @param {array} laptops - Array of laptops
+ */
 const addLaptopsToSelect = (laptops) => {
   laptops.forEach((laptop) => addLaptopToSelect(laptop));
   priceEl.innerText = laptops[0].price;
@@ -36,6 +44,10 @@ const addLaptopsToSelect = (laptops) => {
     "https://noroff-komputer-store-api.herokuapp.com/assets/images/1.png";
 };
 
+/**
+ * Adds specific laptop to the select element
+ * @param {object} laptop - A specific laptop
+ */
 const addLaptopToSelect = (laptop) => {
   const laptopElement = document.createElement("option");
   laptopElement.value = laptop.id;
@@ -43,6 +55,10 @@ const addLaptopToSelect = (laptop) => {
   laptopsEl.appendChild(laptopElement);
 };
 
+/**
+ * Renders the information about a laptop when laptop select changes
+ * @param {*} e
+ */
 const handleLaptopChange = (e) => {
   laptopInfoEl.innerHTML = "";
   selectedLaptop = laptops[e.target.selectedIndex];
@@ -53,8 +69,11 @@ const handleLaptopChange = (e) => {
     "https://noroff-komputer-store-api.herokuapp.com/" + selectedLaptop.image;
 };
 
+/**
+ * Renders out the specs for a laptop
+ * @param {object} specs - The specs of the laptop
+ */
 const updateLaptopFeatures = (specs) => {
-  console.log(specs);
   specs.forEach((feature) => {
     const laptopSpecElement = document.createElement("div");
     laptopSpecElement.appendChild(document.createTextNode(feature));
@@ -62,29 +81,39 @@ const updateLaptopFeatures = (specs) => {
   });
 };
 
+/**
+ * Simulates work. Adds salary
+ */
 const doWork = () => {
-  salary += 100;
-  console.log("Work Work and salary is now: " + salary);
+  salary += payPerClick;
   updateSalaryHTML();
 };
 
+/**
+ * Updates the html for salary
+ */
 const updateSalaryHTML = () => {
   salaryEl.innerHTML = salary;
 };
 
+/**
+ * Deposit salary to bank.
+ */
 const depositToBank = () => {
-  // need to do some calculations if there is a loan
-
+  // Checks for loan and calculates the amount
   bank += calculateLoanPayment(salary);
 
-  console.log("salary moved to bank");
   salary = 0;
   updateSalaryHTML();
   updateLoan();
   updateBank();
 };
 
-// subtracts an amount for down payment for the loan
+/**
+ * Checks for loan and calculates the amount
+ * @param {number} salary
+ * @returns The salary that are available for deposit
+ */
 const calculateLoanPayment = (salary) => {
   if (loan) {
     const loanDownPayment = 0.1 * salary;
@@ -96,6 +125,9 @@ const calculateLoanPayment = (salary) => {
   }
 };
 
+/**
+ * Updates the loan html. Removes the repay button if there is no loan
+ */
 const updateLoan = () => {
   loanEl.innerHTML = loan;
   if (loan > 0) {
@@ -105,10 +137,16 @@ const updateLoan = () => {
   }
 };
 
+/**
+ * Updates the bank html
+ */
 const updateBank = () => {
   moneyInBankEl.innerHTML = bank;
 };
 
+/**
+ * Prompts the user for the loan amount they wish for and then updates html
+ */
 const loanPrompt = () => {
   if (loan < 0 || loan == 0) {
     let loanMessage = prompt(
@@ -128,10 +166,9 @@ const loanPrompt = () => {
   }
 };
 
-const removeRepayLoanButton = () => {
-  console.log("Remove button");
-};
-
+/**
+ * Repays the loan with available salary and then updates the html
+ */
 const repayLoan = () => {
   let loanToBePayed = loan;
   let currentSalary = salary;
@@ -151,12 +188,15 @@ const repayLoan = () => {
   updateSalaryHTML();
 };
 
+/**
+ * Updates the bank and loan variable and some error handling
+ * @param {number} loanAmount - The amount you wish to loan
+ * @returns the loan amount entered
+ */
 const requestLoan = (loanAmount) => {
   if (loanAmount && loanAmount < bank * 2) {
     bank += loanAmount;
     loan += loanAmount;
-
-    console.log("You entered: " + loanAmount);
   } else if (bank <= 0) {
     alert(
       "You dont have any money and therefore can not make a loan. Go work first"
@@ -168,6 +208,9 @@ const requestLoan = (loanAmount) => {
   return loanAmount;
 };
 
+/**
+ * Buy laptop alert and updates the bank
+ */
 const handleBuyLaptop = () => {
   if (bank < selectedLaptop.price) {
     alert("Insufficient funds");
@@ -178,6 +221,7 @@ const handleBuyLaptop = () => {
   }
 };
 
+// All eventlisteners
 workButtonEl.addEventListener("click", doWork);
 bankButtonEl.addEventListener("click", depositToBank);
 loanButtonEl.addEventListener("click", loanPrompt);
