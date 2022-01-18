@@ -13,6 +13,7 @@ const buyButton = document.getElementById("buyButton");
 const laptopTitleEl = document.getElementById("laptopTitle");
 const repayLoanButton = document.getElementById("repayLoan");
 const laptopInfoEl = document.getElementById("laptopInfo");
+const loanContainerEl = document.getElementById("loanContainer");
 
 // Global variables
 const payPerClick = 100;
@@ -35,10 +36,12 @@ fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
  */
 const addLaptopsToSelect = (laptops) => {
   laptops.forEach((laptop) => addLaptopToSelect(laptop));
-  priceEl.innerText = laptops[0].price;
+  priceEl.innerText = laptops[0].price + " NOK";
   descriptionEl.innerText = laptops[0].description;
   selectedLaptop = laptops[0];
   laptopTitleEl.innerText = laptops[0].title;
+  updateSalaryHTML();
+  updateBank();
   updateLaptopFeatures(laptops[0].specs);
   laptopImgEl.src =
     "https://noroff-komputer-store-api.herokuapp.com/assets/images/1.png";
@@ -62,7 +65,7 @@ const addLaptopToSelect = (laptop) => {
 const handleLaptopChange = (e) => {
   laptopInfoEl.innerHTML = "";
   selectedLaptop = laptops[e.target.selectedIndex];
-  priceEl.innerText = selectedLaptop.price;
+  priceEl.innerText = selectedLaptop.price + " NOK";
   descriptionEl.innerText = selectedLaptop.description;
   updateLaptopFeatures(selectedLaptop.specs);
   laptopImgEl.src =
@@ -93,7 +96,7 @@ const doWork = () => {
  * Updates the html for salary
  */
 const updateSalaryHTML = () => {
-  salaryEl.innerHTML = salary;
+  salaryEl.innerHTML = salary + " Kr";
 };
 
 /**
@@ -126,13 +129,15 @@ const calculateLoanPayment = (salary) => {
 };
 
 /**
- * Updates the loan html. Removes the repay button if there is no loan
+ * Updates the loan html. Removes the repay info if there is no loan
  */
 const updateLoan = () => {
   loanEl.innerHTML = loan;
   if (loan > 0) {
+    loanContainerEl.style.display = "inline";
     repayLoanButton.style.display = "inline";
   } else {
+    loanContainerEl.style.display = "none";
     repayLoanButton.style.display = "none";
   }
 };
@@ -141,7 +146,7 @@ const updateLoan = () => {
  * Updates the bank html
  */
 const updateBank = () => {
-  moneyInBankEl.innerHTML = bank;
+  moneyInBankEl.innerHTML = bank + " Kr";
 };
 
 /**
@@ -156,10 +161,9 @@ const loanPrompt = () => {
     let loanInput = parseInt(loanMessage);
     requestLoan(loanInput);
 
-    updateLoan();
-    updateBank();
     if (loan > 0) {
-      createRepayLoanButton();
+      updateLoan();
+      updateBank();
     }
   } else {
     window.alert("Pay back your current loan before taking a new loan");

@@ -21,10 +21,10 @@
             <div id="bank" class="col">
                 <h2>Bank</h2>
                 <div>
-                    <span>balance</span>
+                    <span>Balance</span>
                     <span style="float:right" id="moneyInBank"></span>
                 </div>
-                <div>
+                <div style="display: none" id="loanContainer">
                     <span>Loan</span>
                     <span style="float:right" id="loan"></span>
                 </div>
@@ -68,7 +68,9 @@
                     <p id="description">laptop description</p>
                 </div>
                 <div class="col">
-                    <p id="price">price</p>
+                    <div class="row">
+                        <h4 id="price"></h4>
+                    </div>
                     <button type="button" class="btn btn-info" id="buyButton">BUY NOW</button>
                 </div>
             </div>
